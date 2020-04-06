@@ -1,0 +1,22 @@
+[
+	{
+		"song": "Smells Like Teen Spirit",
+		"band": "Nirvana",
+		"decade": "90s"
+	},
+	{
+		"song": "Santaria",
+		"band": "Sublime",
+		"decade": "90s"
+	},
+	{
+		"song": "Santa Monica",
+		"band": "Everclear",
+		"decade": "90s"
+	},
+	{
+		"song": "The Trooper",
+		"band": "Iron Maiden",
+		"decade": "80s"
+	}
+]
