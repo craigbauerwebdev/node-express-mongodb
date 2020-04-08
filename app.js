@@ -1,11 +1,11 @@
 import express from 'express';
+import SongRoute from './routes/SongRoute';
 import songs from './data/songs.json';
 import _ from 'lodash';
 
-const PORT = 3000,
-server = express();
-
 const 
+	PORT = 3000,
+	server = express(),
 	buildUrl = (ver, path) => `/api/${ver}/${path}`,
 	SONGS_BASE_URL = buildUrl('v1', 'songs');
 
@@ -14,8 +14,7 @@ server.get('/', (req, res) => {
 	res.send('Home Page Stuff');
 });
 
-
-server.get(SONGS_BASE_URL, (req, res) => {
+server.use(SONGS_BASE_URL, SongRoute);
 	
 	/*fetch('https://api.covid19api.com/countries')
 	  .then((response) => {
@@ -26,7 +25,7 @@ server.get(SONGS_BASE_URL, (req, res) => {
 	  });
 		//res.json(songs);
 	});*/
-
+/*server.get(SONGS_BASE_URL, (req, res) => {
 	//console.log(json(songs));
 	res.json(songs);
 	res.end();
@@ -39,7 +38,7 @@ server.get(`${SONGS_BASE_URL}/:song/:band`, (req, res) => {
 	if(song) {
 		res.send(song);
 	} else {
-		res.send('song not found');
+		res.send(`song named ${req.params.song} not found`);
 	}
 	res.end();
 });
@@ -62,8 +61,18 @@ server.post(SONGS_BASE_URL, (req, res) => { //modifies existing data
 server.delete(SONGS_BASE_URL, (req, res) => {
 	console.log('handeling delete request...');
 	res.end();
-});
+});*/
 
+server.get('/route-handlers', (req, res, next) => {
+	// rout handler
+	res.send('Rout Hanlers');
+	next();
+}, (red, res, next) => {
+	console.log('2nd handler');
+	next();
+}, (red, res) => {
+	console.log('3rd handler')
+});
 
 server.listen(PORT, () => {
 	console.log(`Server Started on PORT: ${PORT}`);
