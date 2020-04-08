@@ -23,7 +23,7 @@ router.get('/:id/:song/:band', (req, res) => {
 
 router.param('id', (req, res, next, id) => {
 	if(isNaN(id)) {
-		next('That is not a number');
+		next(`${id} is not a number`);
 	}
 	next();
 });
