@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
 	res.end();
 });
 
-router.get('/:song/:band', (req, res) => {
+router.get('/:id/:song/:band', (req, res) => {
+	console.log(req.params.id);
 	console.log(req.params.song);
 	console.log(req.params.band);
 	const song = _.find(songs, song => song.song === req.params.song);
@@ -18,6 +19,13 @@ router.get('/:song/:band', (req, res) => {
 		res.send(`song named ${req.params.song} not found`);
 	}
 	res.end();
+});
+
+router.param('id', (req, res, next, id) => {
+	if(isNaN(id)) {
+		next('That is not a number');
+	}
+	next();
 });
 
 router.post('/', (req, res) => {

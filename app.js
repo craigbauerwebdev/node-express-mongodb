@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import SongRoute from './routes/SongRoute';
 import songs from './data/songs.json';
 import _ from 'lodash';
@@ -8,6 +9,8 @@ const
 	server = express(),
 	buildUrl = (ver, path) => `/api/${ver}/${path}`,
 	SONGS_BASE_URL = buildUrl('v1', 'songs');
+
+server.use(morgan('tiny'));
 
 server.get('/', (req, res) => {
 	console.log('my route');
