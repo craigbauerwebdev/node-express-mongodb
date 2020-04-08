@@ -30,6 +30,7 @@ router.param('id', (req, res, next, id) => {
 
 router.post('/', (req, res) => {
 	console.log('handeling post request...');
+	console.log(req.body);
 	res.end();
 });
 

@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import SongRoute from './routes/SongRoute';
 import songs from './data/songs.json';
 import _ from 'lodash';
+import bodyParser from 'body-parser';
 
 const 
 	PORT = 3000,
@@ -12,6 +13,7 @@ const
 	SONGS_BASE_URL = buildUrl('v1', 'songs');
 
 server.use(morgan('tiny'));
+server.use(bodyParser.json());
 
 server.get('/', (req, res) => {
 	console.log('my route');
