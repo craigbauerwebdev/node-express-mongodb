@@ -1,7 +1,10 @@
 import express from 'express';
 import songs from '../data/songs.json';
 import _ from 'lodash';
+
 const router = express.Router();
+
+let songsArray = songs;
 
 router.get('/', (req, res) => {
 	res.json(songs);
@@ -31,7 +34,9 @@ router.param('id', (req, res, next, id) => {
 router.post('/', (req, res) => {
 	console.log('handeling post request...');
 	console.log(req.body);
-	res.end();
+	songsArray.push(req.body);
+	res.status(200).send('ok');
+	//res.end();
 });
 
 router.put('/', (req, res) => {
