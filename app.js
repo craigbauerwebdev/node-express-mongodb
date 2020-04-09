@@ -5,6 +5,7 @@ import SongRoute from './routes/SongRoute';
 import songs from './data/songs.json';
 import _ from 'lodash';
 import bodyParser from 'body-parser';
+import path from 'path';
 
 const 
 	PORT = 3000,
@@ -14,6 +15,7 @@ const
 
 server.use(morgan('tiny'));
 server.use(bodyParser.json());
+server.use(express.static('public'));
 
 server.get('/', (req, res) => {
 	console.log('my route');
@@ -21,6 +23,10 @@ server.get('/', (req, res) => {
 });
 
 server.use(SONGS_BASE_URL, SongRoute);
+
+server.get('/download/images/:imageName', (req, res) => {
+	res.download(path.join('public', 'images', req.params.imageName));
+});
 
 server.get('/covid19countries', (req, res, next) => {
 	// route handler
