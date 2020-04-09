@@ -13,16 +13,26 @@ const
 	buildUrl = (ver, path) => `/api/${ver}/${path}`,
 	SONGS_BASE_URL = buildUrl('v1', 'songs');
 
-server.use(morgan('tiny'));
-server.use(bodyParser.json());
-server.use(express.static('public'));
+server.use(morgan('tiny')); //middleware
+server.use(bodyParser.json());  //middleware
+//server.use(express.static('public'));
+// http://localhost:3000/public/images/craig.jpg
+server.use('/replace-public', express.static('public'));
+// http://localhost:3000/replace-public/images/craig.jpg
+server.set('views', path.join('views'));
+server.set('view engine', 'ejs');
 
 server.get('/', (req, res) => {
 	console.log('my route');
-	res.send('Home Page Stuff');
+	res.render('index', {
+		songs
+	});
+	//res.send('Home Page Stuff');
 });
 
 server.use(SONGS_BASE_URL, SongRoute);
+
+//server.get()
 
 server.get('/download/images/:imageName', (req, res) => {
 	res.download(path.join('public', 'images', req.params.imageName));
