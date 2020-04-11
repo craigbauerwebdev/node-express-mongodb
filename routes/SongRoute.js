@@ -1,6 +1,18 @@
 import express from 'express';
 import songs from '../data/songs.json';
 import _ from 'lodash';
+import mongoose from 'mongoose';
+
+const 
+	DB_USER = `craigbauerwebdev`,
+	DB_USER_PASSWORD = `Lagavulin77!`,
+	DB_URL = `mongodb+srv://craigbauerwebdev:${DB_USER_PASSWORD}@songcluster-jz2ss.mongodb.net/test?retryWrites=true&w=majority`;
+
+mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.once('open', () => {
+	console.log('Connected to mLab');
+});
 
 const router = express.Router();
 
