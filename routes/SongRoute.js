@@ -1,8 +1,9 @@
 import express from 'express';
 import songs from '../data/songs.json';
 import _ from 'lodash';
-import mongoose from 'mongoose';
+import mongoose, { SchemaTypes } from 'mongoose';
 
+// Mongo and Mongoose
 const 
 	DB_USER = `craigbauerwebdev`,
 	DB_USER_PASSWORD = `Lagavulin77!`,
@@ -13,6 +14,14 @@ const db = mongoose.connection;
 db.once('open', () => {
 	console.log('Connected to mLab');
 });
+
+const SongSchema = mongoose.Schema({
+	_id: mongoose.Schema.Types.ObjectId,
+	song: String,
+	band: String,
+	decade: String,
+}),
+SongModel = mongoose.model('song', SongSchema);
 
 const router = express.Router();
 
@@ -44,11 +53,27 @@ router.param('id', (req, res, next, id) => {
 });
 
 router.post('/', (req, res) => {
-	console.log('handeling post request...');
-	console.log(req.body);
-	songsArray.push(req.body);
-	res.status(200).send('ok');
+	//console.log('handeling post request...');
+	//console.log(req.body);
+	//songsArray.push(req.body);
+	//res.status(200).send('ok');
 	//res.end();
+	const 
+		id = new mongoose.Types.ObjectId(),
+		songToPersist = Object.assign({
+			_id: id
+		}, req.body);
+		const song = new SongModel(songToPersist);
+		song.save()
+			.then((err, song) => {
+				if(err) {
+					res.status(500).send(err);
+				} else {
+					res.json(song);
+				}
+			});
+		//res.json()
+		//console.log(JSON.stringify(songToPersist));
 });
 
 router.put('/', (req, res) => {
