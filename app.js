@@ -58,10 +58,10 @@ server.get('/covid19countries', (req, res, next) => {
 	    res.json(data);
 	  });
 	next();
-}, (red, res, next) => {
+}, (req, res, next) => {
 	console.log('2nd handler');
 	next();
-}, (red, res) => {
+}, (req, res) => {
 	console.log('3rd handler')
 });
 
