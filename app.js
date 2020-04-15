@@ -27,6 +27,7 @@ server.use(bodyParser.json());  //middleware to parse body
 // http://localhost:3000/public/images/craig.jpg
 server.use('/replace-public', express.static('public'));
 // http://localhost:3000/replace-public/images/craig.jpg
+
 server.set('views', path.join('views'));
 server.set('view engine', 'ejs');
 

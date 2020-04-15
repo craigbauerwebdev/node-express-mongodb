@@ -7,7 +7,7 @@ import mongoose, { SchemaTypes } from 'mongoose';
 const 
 	DB_USER = `craigbauerwebdev`,
 	DB_USER_PASSWORD = `Lagavulin77!`,
-	DB_URL = `mongodb+srv://craigbauerwebdev:${DB_USER_PASSWORD}@songcluster-jz2ss.mongodb.net/test?retryWrites=true&w=majority`;
+	DB_URL = `mongodb+srv://${DB_USER}:${DB_USER_PASSWORD}@songcluster-jz2ss.mongodb.net/test?retryWrites=true&w=majority`;
 
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -28,8 +28,14 @@ const router = express.Router();
 let songsArray = songs;
 
 router.get('/', (req, res) => {
-	res.json(songs);
-	res.end();
+	//res.json(songs);
+	SongModel.find((err, songs) => {
+		if(err) {
+			res.status(500).send(err);
+		} else {
+			res.json(songs);
+		}
+	});
 });
 
 router.get('/:id/:song/:band', (req, res) => {
