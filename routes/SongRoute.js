@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import songs from '../data/songs.json';
 import _ from 'lodash';
 import mongoose, { SchemaTypes } from 'mongoose';
@@ -51,12 +51,26 @@ router.get('/:id/:song/:band', (req, res) => {
 	res.end();
 });
 
-router.param('id', (req, res, next, id) => {
+router.get('/:id', (req, res) => {
+	SongModel.findById(req.params.id, (err, song) => {
+		if(err) {
+			res.status(500).send(err);
+		}
+		if(song) {
+			res.json(song);
+		} else {
+			response.status(404).send(`User with id ${req.params.id} mot found`);
+		}
+	});
+});
+
+/* Validation for id param */
+/* router.param('id', (req, res, next, id) => {
 	if(isNaN(id)) {
 		next(`${id} is not a number`);
 	}
 	next();
-});
+}); */
 
 router.post('/', (req, res) => {
 	//console.log('handeling post request...');
@@ -82,9 +96,28 @@ router.post('/', (req, res) => {
 		//console.log(JSON.stringify(songToPersist));
 });
 
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
 	console.log('handeling put request...');
-	res.end();
+	//res.end();
+	SongModel.findById(req.params.id, (err, song) => {
+		if(err) {
+			res.status(500).send(err);
+		}
+		if(song) {
+			song.song = req.body.song; //sent from put request
+			song.band = req.body.band; //sent from put request
+			song.save().then((err, song) => {
+				if(err) {
+					res.status(500).send(err);
+				} else {
+					res.json(song);
+				}
+			});
+		} else {
+			response.status(404).send(`User with id ${req.params.id} mot found`);
+		}
+		
+	});
 });
 
 router.post('/', (req, res) => { //modifies existing data
