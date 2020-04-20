@@ -116,18 +116,21 @@ router.put('/:id', (req, res) => {
 		} else {
 			response.status(404).send(`User with id ${req.params.id} mot found`);
 		}
-		
 	});
 });
 
-router.post('/', (req, res) => { //modifies existing data
+/* router.post('/', (req, res) => { //modifies existing data
 	console.log('handeling post request...');
 	res.end();
-});
+}); */
 
-router.delete('/', (req, res) => {
-	console.log('handeling delete request...');
-	res.end();
+router.delete('/:id', (req, res) => {
+	//console.log('handeling delete request...');
+	//res.end();
+	SongModel.findByIdAndRemove(req.params.id, (err, song) => {
+		if(err) res.status(500).send(err);
+		res.status(200).send(`${req.params.id} was deleted`);
+	});
 });
 
 module.exports = router;
