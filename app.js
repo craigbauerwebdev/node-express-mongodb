@@ -9,6 +9,12 @@ import path from 'path';
 import https from 'https';
 import fs from 'fs';
 
+//--undo push
+//git push - f origin HEAD ^: master
+
+//--undo last commit
+//git reset--soft HEAD ^
+
 const 
 	tlsOptions = {
 		key: fs.readFileSync(path.join('key.pem')),

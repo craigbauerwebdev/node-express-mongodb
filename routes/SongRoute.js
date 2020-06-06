@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config();
 import express, { response } from 'express';
 import songs from '../data/songs.json';
 import _ from 'lodash';
@@ -5,15 +7,22 @@ import mongoose, { SchemaTypes } from 'mongoose';
 
 // Mongo and Mongoose
 const 
-	DB_USER = `craigbauerwebdev`,
-	DB_USER_PASSWORD = `Lagavulin77!`,
+	DB_USER = process.env.MONGOUSER,
+	DB_USER_PASSWORD = process.env.MONGOPASS,
 	DB_URL = `mongodb+srv://${DB_USER}:${DB_USER_PASSWORD}@songcluster-jz2ss.mongodb.net/test?retryWrites=true&w=majority`;
+	       //`mongodb + srv://${DB_USER}:${DB_USER_PASSWORD}@songcluster-jz2ss.mongodb.net/test?retryWrites=true&w=majority`;
 
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+	//.then(() => console.log(''))
+	//.catch(() => console.log('error from connect'));
 const db = mongoose.connection;
-db.once('open', () => {
-	console.log('Connected to mLab');
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+	console.log('Connected to mongoDB');
 });
+/* db.once('open', () => {
+	console.log('Connected to mLab');
+}); */
 
 const SongSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
@@ -21,18 +30,24 @@ const SongSchema = mongoose.Schema({
 	band: String,
 	decade: String,
 }),
-SongModel = mongoose.model('song', SongSchema);
+SongModel = mongoose.model('songs', SongSchema, 'songs');
 
 const router = express.Router();
 
 let songsArray = songs;
 
 router.get('/', (req, res) => {
+	console.log('getting songs from momgoDB');
 	//res.json(songs);
 	SongModel.find((err, songs) => {
 		if(err) {
-			res.status(500).send(err);
+			//res.json(songs);
+			res.status(500).send
+			console.log('error51');
+			//res.json(songs);
+			//console.log(err);	
 		} else {
+			console.log('success');
 			res.json(songs);
 		}
 	});
